@@ -28,8 +28,7 @@ const QuestionTypeSchema = z.enum([
 const QuestionDataSchema = z.object({
   id: z.string(),
   questionType: QuestionTypeSchema,
-  questionText: z.string(),
-  metadata: z.record(z.any()).optional().default({})
+  questionText: z.string()
 });
 
 const SubmissionQuestionSchema = z.object({

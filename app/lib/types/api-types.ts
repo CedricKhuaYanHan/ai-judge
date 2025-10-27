@@ -15,7 +15,6 @@ export interface EvaluationContext {
   questionText: string;
   questionType: string;
   answerData: Record<string, any>;
-  submissionMetadata?: Record<string, any>;
   attachments?: Attachment[];
 }
 
@@ -121,7 +120,6 @@ export interface JudgeConfigMetadata {
     questionText: boolean;
     questionType: boolean;
     answerData: boolean;
-    submissionMetadata: boolean;
     attachments: boolean;
   };
 }

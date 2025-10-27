@@ -25,7 +25,6 @@ export async function executeEvaluation(
         questionText: true,
         questionType: true,
         answerData: true,
-        submissionMetadata: true,
         attachments: true,
       },
     });

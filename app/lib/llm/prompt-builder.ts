@@ -32,23 +32,6 @@ export class PromptBuilder {
   }
 
   private buildSystemPrompt(): string {
-    // Check if the judge's custom prompt appears to be a complete system prompt
-    // (contains instructions about JSON format or response format)
-    const lowerPrompt = this.judgeCustomPrompt.toLowerCase();
-    const hasCompleteInstructions = 
-      lowerPrompt.includes('json') ||
-      lowerPrompt.includes('verdict') ||
-      lowerPrompt.includes('response') ||
-      lowerPrompt.includes('format') ||
-      lowerPrompt.includes('ignore');
-    
-    if (hasCompleteInstructions) {
-      // Judge has provided complete instructions - use only their prompt
-      return this.judgeCustomPrompt;
-    }
-    
-    // Judge provided criteria only - combine with base framework
-    // Put judge's criteria FIRST so it takes precedence
     const baseInstructions = this.getBaseEvaluationInstructions();
     return `${this.judgeCustomPrompt}\n\n${baseInstructions}`;
   }
@@ -69,12 +52,6 @@ export class PromptBuilder {
     if (this.configMetadata.includedFields.answerData) {
       const answerText = this.formatAnswerData(context.answerData);
       sections.push(`Answer: ${answerText}`);
-    }
-
-    // Add submission metadata if enabled and available
-    if (this.configMetadata.includedFields.submissionMetadata && context.submissionMetadata) {
-      const metadataText = this.formatMetadata(context.submissionMetadata);
-      sections.push(`Submission Metadata: ${metadataText}`);
     }
 
     // Add attachments information if enabled and available
@@ -112,13 +89,6 @@ export class PromptBuilder {
     return String(answerData);
   }
 
-  private formatMetadata(metadata: Record<string, any>): string {
-    if (!metadata || Object.keys(metadata).length === 0) {
-      return "No metadata available";
-    }
-    return JSON.stringify(metadata, null, 2);
-  }
-
   private formatAttachments(
     attachments: Array<{
       attachment_id: string;
@@ -154,7 +124,7 @@ Verdict Guidelines:
 
 Evaluation Principles:
 - Provide clear, specific reasoning for your decision
-- Consider the context and any relevant metadata
+- Consider the context and any relevant information
 - Be objective and fair in your assessment
 - Follow the specific evaluation criteria provided below
 
