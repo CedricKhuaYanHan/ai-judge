@@ -1,0 +1,541 @@
+---
+alwaysApply: true
+---
+
+# Database Schema Documentation
+
+## Current Schema (8 Tables)
+
+The database has been redesigned to an 8-table structure that separates question templates from answers and provides granular control over queue assignments and judge evaluations. The new design uses answer-based queues and judge assignments, allowing specific answers to be assigned to specific queues and evaluated by specific judges.
+
+## Table Structure
+
+### 1. `submissions` - Minimal Submission Containers
+
+```sql
+CREATE TABLE submissions (
+    submission_id TEXT PRIMARY KEY,         -- External submission identifier
+    labeling_task_id TEXT,                  -- Task identifier from external system
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+**Purpose**: Minimal containers for grouping answers
+**Key Fields**:
+
+- `submission_id`: External submission identifier
+- `labeling_task_id`: Task identifier from external system
+- `created_at`: Submission timestamp
+
+**Changes from Previous Schema**: Added `labeling_task_id` for external system integration
+
+### 2. `question_templates` - Reusable Question Templates
+
+```sql
+CREATE TABLE question_templates (
+    question_template_id TEXT PRIMARY KEY,  -- External question template identifier
+    revision INTEGER NOT NULL,              -- Version number
+    question_text TEXT NOT NULL,           -- Question content
+    question_type TEXT,                     -- Question type (uses enum: question_type)
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+**Purpose**: Store reusable question templates
+**Key Fields**:
+
+- `question_template_id`: External question template identifier
+- `revision`: Version control
+- `question_text`: Question content
+- `question_type`: Type of question (text, multiple_choice, rating, boolean, file_upload, single_choice_with_reasoning)
+- `created_at`: Template creation timestamp
+
+### 3. `answers` - Submission-Specific Responses
+
+```sql
+CREATE TABLE answers (
+    answer_id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+    submission_id TEXT NOT NULL,
+    question_template_id TEXT NOT NULL,
+    question_revision INTEGER NOT NULL,
+    answer_value JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+
+    FOREIGN KEY (submission_id) REFERENCES submissions(submission_id) ON DELETE CASCADE,
+    FOREIGN KEY (question_template_id) REFERENCES question_templates(question_template_id) ON DELETE CASCADE,
+    UNIQUE(submission_id, question_template_id)
+);
+```
+
+**Purpose**: Store user answers linked to specific submissions and question templates
+**Key Fields**:
+
+- `answer_id`: Unique answer identifier
+- `submission_id`: Parent submission (FK to submissions)
+- `question_template_id`: Question template (FK to question_templates)
+- `question_revision`: Version of question template when answered
+- `answer_value`: User's answer stored as JSONB
+- `created_at`: Answer creation timestamp
+
+**Answer JSONB Format Examples**:
+
+```json
+// single_choice_with_reasoning
+{"choice": "yes", "reasoning": "Observed on a clear day."}
+
+// text
+{"answer": "Green, sometimes brown if dry."}
+
+// boolean
+{"answer": true}
+
+// rating
+{"answer": 5}
+```
+
+### 4. `judges` - AI Judge Configurations
+
+```sql
+CREATE TABLE judges (
+    judge_id TEXT PRIMARY KEY,              -- External judge identifier
+    name TEXT NOT NULL,                     -- Judge display name
+    provider TEXT NOT NULL,                 -- 'openai', 'anthropic', 'gemini'
+    model TEXT NOT NULL,                    -- Model name
+    prompt TEXT NOT NULL,                   -- System prompt
+    is_active BOOLEAN DEFAULT true,        -- Whether judge is active
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+**Purpose**: Store AI judge configurations and prompts
+**Key Fields**:
+
+- `judge_id`: External judge identifier
+- `name`: Human-readable judge name
+- `provider`: LLM provider (uses enum: llm_provider)
+- `model`: Specific model to use
+- `prompt`: System prompt for the judge
+- `is_active`: Whether judge is currently active
+
+### 5. `answer_queues` - Answer-Queue Assignments
+
+```sql
+CREATE TABLE answer_queues (
+    answer_id TEXT REFERENCES answers(answer_id) NOT NULL,
+    queue_id TEXT NOT NULL,                 -- Text-based queue identifier
+    PRIMARY KEY (answer_id, queue_id)
+);
+```
+
+**Purpose**: Assign specific answers to specific queues (granular control)
+**Key Fields**:
+
+- `answer_id`: Answer identifier (FK to answers)
+- `queue_id`: Text-based queue identifier (not a FK)
+
+### 6. `answer_judges` - Answer-Judge Assignments
+
+```sql
+CREATE TABLE answer_judges (
+    answer_id TEXT REFERENCES answers(answer_id) NOT NULL,
+    judge_id TEXT REFERENCES judges(judge_id) NOT NULL,
+    PRIMARY KEY (answer_id, judge_id)
+);
+```
+
+**Purpose**: Assign specific judges to specific answers (granular control)
+**Key Fields**:
+
+- `answer_id`: Answer identifier (FK to answers)
+- `judge_id`: Judge identifier (FK to judges)
+
+### 7. `attachments` - File Attachments
+
+```sql
+CREATE TABLE attachments (
+    attachment_id TEXT PRIMARY KEY,         -- Unique attachment identifier
+    answer_id TEXT REFERENCES answers(answer_id) NOT NULL,
+    url TEXT NOT NULL,                      -- File URL
+    type TEXT,                              -- File type
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+**Purpose**: Store file attachments (screenshots, PDFs) linked to specific answers
+**Key Fields**:
+
+- `attachment_id`: Unique attachment identifier
+- `answer_id`: Parent answer (FK to answers)
+- `url`: File location/URL
+- `type`: File type (optional)
+
+**Changes from Previous Schema**: Changed FK from `question_id` to `answer_id`
+
+### 8. `evaluations` - AI Judge Results
+
+```sql
+CREATE TABLE evaluations (
+    evaluation_id TEXT PRIMARY KEY,         -- Unique evaluation identifier
+    answer_id TEXT REFERENCES answers(answer_id) NOT NULL,
+    judge_id TEXT REFERENCES judges(judge_id) NOT NULL,
+    verdict TEXT,                           -- 'pass', 'fail', 'inconclusive' (uses enum: verdict_type)
+    reasoning TEXT,                         -- Judge's reasoning
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+**Purpose**: Store AI judge evaluation results
+**Key Fields**:
+
+- `evaluation_id`: Unique evaluation identifier
+- `answer_id`: Answer being evaluated (FK to answers)
+- `judge_id`: Judge that performed the evaluation (FK to judges)
+- `verdict`: Judge's decision (pass, fail, inconclusive)
+- `reasoning`: Explanation for the verdict
+
+**Changes from Previous Schema**: Changed FK from `question_id` to `answer_id`
+
+## Enums
+
+### `llm_provider`
+
+- `"openai"`
+- `"anthropic"`
+- `"gemini"`
+
+### `question_type`
+
+- `"text"`
+- `"multiple_choice"`
+- `"rating"`
+- `"boolean"`
+- `"file_upload"`
+- `"single_choice_with_reasoning"`
+
+### `verdict_type`
+
+- `"pass"`
+- `"fail"`
+- `"inconclusive"`
+
+## Database Functions
+
+### Statistics Functions
+
+#### `get_evaluation_stats(queue_id_param?: string)`
+
+Returns evaluation statistics for a queue:
+
+- `total_evaluations`: Total number of evaluations
+- `pass_count`: Number of passing evaluations
+- `fail_count`: Number of failing evaluations
+- `inconclusive_count`: Number of inconclusive evaluations
+- `pass_rate`: Percentage of passing evaluations
+
+#### `get_judge_performance_stats(judge_id_param: string)`
+
+Returns performance statistics for a specific judge:
+
+- `judge_name`: Name/ID of the judge
+- `total_evaluations`: Total evaluations performed
+- `pass_count`, `fail_count`, `inconclusive_count`: Evaluation counts
+- `pass_rate`: Percentage of passing evaluations
+- `avg_reasoning_length`: Average length of reasoning text
+
+#### `get_submission_stats(queue_id_param?: string)`
+
+Returns submission statistics:
+
+- `total_submissions`: Total number of submissions
+- `total_question_templates`: Total question templates across all submissions
+- `total_answers`: Total answers provided
+- `avg_question_templates_per_submission`: Average question templates per submission
+- `avg_answers_per_submission`: Average answers per submission
+
+#### `get_answers_by_queue(queue_id_param: string)`
+
+Returns all answers in a specific queue:
+
+- `answer_id`: Answer identifier
+- `submission_id`: Parent submission
+- `question_template_id`: Question template
+- `question_text`: Question text
+- `question_type`: Question type
+- `answer_value`: Answer data
+
+### Relationship Functions
+
+#### `get_judge_question_templates(judge_id_param: string)`
+
+Returns all question templates assigned to a specific judge:
+
+- `question_template_id`, `question_text`, `question_type`, `revision`
+
+#### `get_question_template_judges(question_template_id_param: string)`
+
+Returns all judges assigned to a specific question template:
+
+- `judge_id`, `name`, `provider`, `model`, `prompt`, `is_active`, `created_at`
+
+### Utility Functions
+
+#### `jsonb_object_keys_count(obj: Json)`
+
+Returns the count of keys in a JSONB object.
+
+#### `uuid_generate_v4()`
+
+Generates a new UUID v4.
+
+## Relationships
+
+### Primary Relationships
+
+```
+submissions ──< answers ──< answer_queues (queue_id = text tag)
+                    │
+                    ├──< answer_judges >── judges
+                    │
+                    ├──< attachments
+                    │
+                    └──< evaluations
+
+question_templates ──< answers (question_template_id)
+```
+
+1. **submissions** ← **answers** (1:many)
+2. **question_templates** ← **answers** (1:many)
+3. **answers** ← **answer_queues** (1:many, queue_id as text tag)
+4. **judges** ↔ **answers** (many:many via answer_judges)
+5. **answers** ← **attachments** (1:many)
+6. **answers** ← **evaluations** (1:many)
+7. **judges** ← **evaluations** (1:many)
+
+### Data Flow
+
+1. **Import**: JSON submissions → extract question templates and answers → populate normalized tables
+2. **Queue Assignment**: Specific answers assigned to queues via `answer_queues`
+3. **Judge Assignment**: Specific judges assigned to specific answers via `answer_judges`
+4. **Evaluation**: answers + assigned judges → evaluations
+5. **Attachments**: answers → attachments (used during evaluation)
+
+## Common Queries
+
+### Get Answers by Queue
+
+```sql
+SELECT a.*, qt.question_text, qt.question_type
+FROM answers a
+JOIN answer_queues aq ON a.answer_id = aq.answer_id
+JOIN question_templates qt ON a.question_template_id = qt.question_template_id
+WHERE aq.queue_id = 'queue_1';
+```
+
+### Get Submission with Answers
+
+```sql
+SELECT s.*, a.answer_value, qt.question_text, qt.question_type
+FROM submissions s
+JOIN answers a ON s.submission_id = a.submission_id
+JOIN question_templates qt ON a.question_template_id = qt.question_template_id
+WHERE s.submission_id = ?;
+```
+
+### Get Answers with Evaluations
+
+```sql
+SELECT a.*, e.verdict, e.reasoning, j.judge_id, j.name, j.provider
+FROM answers a
+LEFT JOIN evaluations e ON a.answer_id = e.answer_id
+LEFT JOIN judges j ON e.judge_id = j.judge_id
+WHERE a.submission_id = ?;
+```
+
+### Get Evaluation Stats by Queue
+
+```sql
+SELECT COUNT(*), e.verdict
+FROM evaluations e
+JOIN answers a ON e.answer_id = a.answer_id
+JOIN answer_queues aq ON a.answer_id = aq.answer_id
+WHERE aq.queue_id = 'queue_1'
+GROUP BY e.verdict;
+```
+
+### Get Judge Performance
+
+```sql
+SELECT j.judge_id, j.name, COUNT(e.*) as total_evaluations,
+       COUNT(*) FILTER (WHERE e.verdict = 'pass') as pass_count
+FROM judges j
+LEFT JOIN evaluations e ON j.judge_id = e.judge_id
+GROUP BY j.judge_id, j.name;
+```
+
+### Get Answers Assigned to a Judge
+
+```sql
+SELECT a.*, qt.question_text, qt.question_type
+FROM answers a
+JOIN answer_judges aj ON a.answer_id = aj.answer_id
+JOIN question_templates qt ON a.question_template_id = qt.question_template_id
+WHERE aj.judge_id = ?
+ORDER BY a.submission_id;
+```
+
+### Get Judges Assigned to an Answer
+
+```sql
+SELECT j.*
+FROM judges j
+JOIN answer_judges aj ON j.judge_id = aj.judge_id
+WHERE aj.answer_id = ?
+ORDER BY j.created_at DESC;
+```
+
+### Get Attachments for Answer
+
+```sql
+SELECT a.*
+FROM attachments a
+WHERE a.answer_id = ?
+ORDER BY a.created_at DESC;
+```
+
+## Data Import Example
+
+### Input JSON Structure
+
+```json
+{
+  "id": "sub_1",
+  "queueId": "queue_1",
+  "labelingTaskId": "task_1",
+  "createdAt": 1690000000000,
+  "questions": [
+    {
+      "rev": 1,
+      "data": {
+        "id": "q_template_1",
+        "questionType": "single_choice_with_reasoning",
+        "questionText": "Is the sky blue?"
+      }
+    }
+  ],
+  "answers": {
+    "q_template_1": {
+      "choice": "yes",
+      "reasoning": "Observed on a clear day."
+    }
+  }
+}
+```
+
+### Database Storage Result
+
+**submissions table:**
+
+```
+submission_id | labeling_task_id | created_at
+sub_1         | task_1          | 2023-07-22 (converted from createdAt)
+```
+
+**question_templates table:**
+
+```
+question_template_id | revision | question_text    | question_type                   | created_at
+q_template_1         | 1        | Is the sky blue? | single_choice_with_reasoning    | 2023-07-22
+```
+
+**answers table:**
+
+```
+answer_id | submission_id | question_template_id | question_revision | answer_value
+ans_1     | sub_1         | q_template_1         | 1                 | {"choice": "yes", "reasoning": "Observed on a clear day."}
+```
+
+**answer_queues table:**
+
+```
+answer_id | queue_id
+ans_1     | queue_1
+```
+
+## TypeScript Integration
+
+### Generated Types
+
+The schema is fully typed with auto-generated TypeScript interfaces:
+
+- `Tables<'submissions'>` - Submission row type
+- `Tables<'question_templates'>` - Question template row type
+- `Tables<'answers'>` - Answer row type
+- `Tables<'judges'>` - Judge row type
+- `Tables<'answer_judges'>` - Answer-judge assignment type
+- `Tables<'answer_queues'>` - Answer-queue assignment type
+- `Tables<'attachments'>` - Attachment row type
+- `Tables<'evaluations'>` - Evaluation row type
+
+### Enum Types
+
+- `Enums<'llm_provider'>` - LLM provider options
+- `Enums<'question_type'>` - Question type options
+- `Enums<'verdict_type'>` - Verdict type options
+
+### Function Return Types
+
+- `get_evaluation_stats` returns evaluation statistics
+- `get_judge_performance_stats` returns judge performance data
+- `get_submission_stats` returns submission statistics
+- `get_answers_by_queue` returns answers in a specific queue
+- `get_judge_question_templates` returns question templates for a judge
+- `get_question_template_judges` returns judges for a question template
+
+## Key Design Benefits
+
+### 1. **Fully Normalized Data**
+
+- Separate question templates from answers
+- All question/answer data is SQL queryable
+- Clean separation of concerns
+
+### 2. **Granular Queue Control**
+
+- Queues are text tags, not database entities
+- Specific answers can be assigned to specific queues
+- Add/remove queue assignments without schema migrations
+- Maximum flexibility for organizing answers
+
+### 3. **Flexible Judge Assignment**
+
+- Specific judges can be assigned to specific answers
+- Different answers can have different judges
+- Granular control over evaluation workflow
+
+### 4. **Clean Import Process**
+
+- JSON submissions → extract question templates and answers
+- Question templates stored once, answers linked to submissions
+- Queue and judge assignments applied at answer level
+
+### 5. **Better Performance**
+
+- Indexed relationships for fast queries
+- No complex JSONB operations
+- Standard SQL joins and filters
+- Optimized for answer-based workflows
+
+## Security Configuration
+
+**Row Level Security (RLS)**: Disabled on all tables for simplified access control. This allows direct database access without complex authentication policies.
+
+## Migration Notes
+
+This schema represents a complete redesign from the previous structure. Key changes:
+
+1. **Removed**: `queues` table, `content` JSONB from submissions, `question_queues` and `question_judges` tables
+2. **Added**: `question_templates` table, `answers` table, `answer_queues` and `answer_judges` junction tables
+3. **Modified**: `attachments` now link to answers instead of questions, `evaluations` now link to answers
+4. **Simplified**: Answer-based queue and judge assignments provide granular control
+
+The new schema provides a clean, efficient foundation for the AI Judge system with granular control over queue assignments and judge evaluations while maintaining all necessary functionality and relationships.

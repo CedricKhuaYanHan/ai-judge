@@ -1,0 +1,280 @@
+{
+  "buildManifest": {
+    "serverBundles": {
+      "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0": {
+        "id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+        "file": "build/server/nodejs_eyJydW50aW1lIjoibm9kZWpzIn0/index.js",
+        "config": {
+          "runtime": "nodejs"
+        }
+      }
+    },
+    "routeIdToServerBundleId": {
+      "routes/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.import-submissions": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.judges": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.answer-judges": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.queues": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.run-evaluations": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/api.evaluations": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/layout": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/settings": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/submissions/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/submissions/$id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/judges/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/questions/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/queues/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/dashboard/results/index": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
+    },
+    "routes": {
+      "root": {
+        "path": "",
+        "id": "root",
+        "file": "app/root.tsx",
+        "config": {}
+      },
+      "routes/index": {
+        "id": "routes/index",
+        "parentId": "root",
+        "file": "app/routes/index.tsx",
+        "index": true,
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/api.import-submissions": {
+        "id": "routes/api.import-submissions",
+        "parentId": "root",
+        "file": "app/routes/api.import-submissions.tsx",
+        "path": "api/import-submissions",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/api.judges": {
+        "id": "routes/api.judges",
+        "parentId": "root",
+        "file": "app/routes/api.judges.tsx",
+        "path": "api/judges",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/api.answer-judges": {
+        "id": "routes/api.answer-judges",
+        "parentId": "root",
+        "file": "app/routes/api.answer-judges.tsx",
+        "path": "api/answer-judges",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/api.queues": {
+        "id": "routes/api.queues",
+        "parentId": "root",
+        "file": "app/routes/api.queues.tsx",
+        "path": "api/queues",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/api.run-evaluations": {
+        "id": "routes/api.run-evaluations",
+        "parentId": "root",
+        "file": "app/routes/api.run-evaluations.tsx",
+        "path": "api/run-evaluations",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/api.evaluations": {
+        "id": "routes/api.evaluations",
+        "parentId": "root",
+        "file": "app/routes/api.evaluations.tsx",
+        "path": "api/evaluations",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/dashboard/layout": {
+        "id": "routes/dashboard/layout",
+        "parentId": "root",
+        "file": "app/routes/dashboard/layout.tsx",
+        "path": "dashboard",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/dashboard/settings": {
+        "id": "routes/dashboard/settings",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/settings.tsx",
+        "path": "settings",
+        "config": {}
+      },
+      "routes/dashboard/submissions/index": {
+        "id": "routes/dashboard/submissions/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/submissions/index.tsx",
+        "path": "submissions",
+        "config": {}
+      },
+      "routes/dashboard/submissions/$id": {
+        "id": "routes/dashboard/submissions/$id",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/submissions/$id.tsx",
+        "path": "submissions/:id",
+        "config": {}
+      },
+      "routes/dashboard/judges/index": {
+        "id": "routes/dashboard/judges/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/judges/index.tsx",
+        "path": "judges",
+        "config": {}
+      },
+      "routes/dashboard/questions/index": {
+        "id": "routes/dashboard/questions/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/questions/index.tsx",
+        "path": "questions",
+        "config": {}
+      },
+      "routes/dashboard/queues/index": {
+        "id": "routes/dashboard/queues/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/queues/index.tsx",
+        "path": "queues",
+        "config": {}
+      },
+      "routes/dashboard/results/index": {
+        "id": "routes/dashboard/results/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "app/routes/dashboard/results/index.tsx",
+        "path": "results",
+        "config": {}
+      }
+    }
+  },
+  "reactRouterConfig": {
+    "appDirectory": "/Users/cedrickhua/Desktop/ai-judge/app",
+    "basename": "/",
+    "buildDirectory": "/Users/cedrickhua/Desktop/ai-judge/build",
+    "future": {
+      "unstable_middleware": false,
+      "unstable_optimizeDeps": false,
+      "unstable_splitRouteModules": false,
+      "unstable_subResourceIntegrity": false,
+      "unstable_viteEnvironmentApi": false
+    },
+    "routes": {
+      "root": {
+        "path": "",
+        "id": "root",
+        "file": "root.tsx"
+      },
+      "routes/index": {
+        "id": "routes/index",
+        "parentId": "root",
+        "file": "routes/index.tsx",
+        "index": true
+      },
+      "routes/api.import-submissions": {
+        "id": "routes/api.import-submissions",
+        "parentId": "root",
+        "file": "routes/api.import-submissions.tsx",
+        "path": "api/import-submissions"
+      },
+      "routes/api.judges": {
+        "id": "routes/api.judges",
+        "parentId": "root",
+        "file": "routes/api.judges.tsx",
+        "path": "api/judges"
+      },
+      "routes/api.answer-judges": {
+        "id": "routes/api.answer-judges",
+        "parentId": "root",
+        "file": "routes/api.answer-judges.tsx",
+        "path": "api/answer-judges"
+      },
+      "routes/api.queues": {
+        "id": "routes/api.queues",
+        "parentId": "root",
+        "file": "routes/api.queues.tsx",
+        "path": "api/queues"
+      },
+      "routes/api.run-evaluations": {
+        "id": "routes/api.run-evaluations",
+        "parentId": "root",
+        "file": "routes/api.run-evaluations.tsx",
+        "path": "api/run-evaluations"
+      },
+      "routes/api.evaluations": {
+        "id": "routes/api.evaluations",
+        "parentId": "root",
+        "file": "routes/api.evaluations.tsx",
+        "path": "api/evaluations"
+      },
+      "routes/dashboard/layout": {
+        "id": "routes/dashboard/layout",
+        "parentId": "root",
+        "file": "routes/dashboard/layout.tsx",
+        "path": "dashboard"
+      },
+      "routes/dashboard/settings": {
+        "id": "routes/dashboard/settings",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/settings.tsx",
+        "path": "settings"
+      },
+      "routes/dashboard/submissions/index": {
+        "id": "routes/dashboard/submissions/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/submissions/index.tsx",
+        "path": "submissions"
+      },
+      "routes/dashboard/submissions/$id": {
+        "id": "routes/dashboard/submissions/$id",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/submissions/$id.tsx",
+        "path": "submissions/:id"
+      },
+      "routes/dashboard/judges/index": {
+        "id": "routes/dashboard/judges/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/judges/index.tsx",
+        "path": "judges"
+      },
+      "routes/dashboard/questions/index": {
+        "id": "routes/dashboard/questions/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/questions/index.tsx",
+        "path": "questions"
+      },
+      "routes/dashboard/queues/index": {
+        "id": "routes/dashboard/queues/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/queues/index.tsx",
+        "path": "queues"
+      },
+      "routes/dashboard/results/index": {
+        "id": "routes/dashboard/results/index",
+        "parentId": "routes/dashboard/layout",
+        "file": "routes/dashboard/results/index.tsx",
+        "path": "results"
+      }
+    },
+    "routeDiscovery": {
+      "mode": "lazy",
+      "manifestPath": "/__manifest"
+    },
+    "serverBuildFile": "index.js",
+    "serverModuleFormat": "esm",
+    "ssr": true
+  },
+  "viteConfig": {
+    "build": {
+      "assetsDir": "assets"
+    }
+  }
+}

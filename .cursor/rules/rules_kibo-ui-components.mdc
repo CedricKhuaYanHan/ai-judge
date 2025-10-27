@@ -1,0 +1,204 @@
+---
+description: Kibo UI components - modern React components built on shadcn/ui
+globs: **/*.tsx
+---
+
+# Kibo UI Components
+
+We use Kibo UI (https://kibo-ui.com) - a modern React component library built on top of shadcn/ui.
+Kibo UI provides composable, accessible, and open-source components designed to work seamlessly with shadcn/ui.
+
+## Prerequisites
+
+- Node.js (version 18 or later)
+- React project (version 18 or later)
+- shadcn/ui installed
+
+## Installation & Updates
+
+Add new components: `npx kibo-ui add {component-name}`
+Update existing components: `npx kibo-ui update {component-name}`
+
+**Note**: Components are installed to `app/components/kibo-ui/` to align with the project structure.
+
+## Import Patterns
+
+**IMPORTANT**: All Kibo UI components are added directly to your codebase and can be imported from their local paths using the `~/components/kibo-ui/` alias.
+
+Example:
+
+```typescript
+import { Announcement } from "~/components/kibo-ui/announcement";
+```
+
+## Available Components
+
+### Layout & Navigation
+
+- **announcement** - Announcement banner component
+- **banner** - Promotional or informational banner
+- **marquee** - Scrolling text banner
+- **ticker** - Live updating ticker component
+
+### Data Display
+
+- **avatar-stack** - Stacked avatar display for multiple users
+- **calendar** - Enhanced calendar component
+- **mini-calendar** - Compact calendar widget
+- **gantt** - Gantt chart component for project management
+- **kanban** - Kanban board interface
+- **table** - Enhanced table component
+- **tree** - Tree view component
+- **list** - Enhanced list component
+- **deck** - Card deck layout
+- **reel** - Image/video reel component
+- **stories** - Story-style content display
+
+### Forms & Input
+
+- **choicebox** - Multi-choice selection interface
+- **combobox** - Searchable dropdown component
+- **dropzone** - File upload drop zone
+- **editor** - Rich text editor component
+- **tags** - Tag input and display
+- **pill** - Pill-shaped tag component
+- **color-picker** - Color selection interface
+- **rating** - Star rating component
+
+### Media & Content
+
+- **image-crop** - Image cropping interface
+- **image-zoom** - Image zoom functionality
+- **video-player** - Custom video player
+- **code-block** - Syntax highlighted code display
+- **snippet** - Code snippet component
+- **qr-code** - QR code generator
+- **patterns** - Pattern display component
+
+### Interactive Components
+
+- **comparison** - Side-by-side comparison interface
+- **cursor** - Custom cursor component
+- **spinner** - Loading spinner component
+- **status** - Status indicator component
+- **theme-switcher** - Theme switching interface
+- **sandbox** - Code sandbox component
+- **glimpse** - Preview component
+
+### Specialized Components
+
+- **dialog-stack** - Stacked dialog management
+- **contribution-graph** - GitHub-style contribution graph
+- **credit-card** - Credit card input component
+- **relative-time** - Relative time display
+- **typography** - Enhanced typography components
+
+## Usage Examples
+
+### Basic Component Usage
+
+```typescript
+import { Calendar } from "~/components/kibo-ui/calendar";
+import { Kanban } from "~/components/kibo-ui/kanban";
+
+function Dashboard() {
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <Calendar />
+      <Kanban />
+    </div>
+  );
+}
+```
+
+### Gantt Chart Implementation
+
+```typescript
+import {
+  GanttProvider,
+  GanttSidebar,
+  GanttSidebarGroup,
+  GanttSidebarItem,
+  GanttTimeline,
+  GanttHeader,
+  GanttFeatureList,
+  GanttFeatureListGroup,
+  GanttFeatureRow,
+  GanttToday,
+  GanttCreateMarkerTrigger,
+} from "~/components/kibo-ui/gantt";
+import type { GanttFeature, GanttStatus } from "~/components/kibo-ui/gantt";
+
+function ProjectTimeline({ features }: { features: GanttFeature[] }) {
+  return (
+    <GanttProvider range="monthly" zoom={100} className="h-screen">
+      <GanttSidebar>
+        <GanttSidebarGroup name="Project Tasks">
+          {features.map((feature) => (
+            <GanttSidebarItem
+              key={feature.id}
+              feature={feature}
+              onSelectItem={(id) => console.log("Selected:", id)}
+            />
+          ))}
+        </GanttSidebarGroup>
+      </GanttSidebar>
+
+      <GanttTimeline>
+        <GanttHeader />
+        <GanttFeatureList>
+          <GanttFeatureListGroup>
+            <GanttFeatureRow
+              features={features}
+              onMove={(id, startAt, endAt) => {
+                console.log("Moved feature:", id, startAt, endAt);
+              }}
+            />
+          </GanttFeatureListGroup>
+        </GanttFeatureList>
+        <GanttToday />
+        <GanttCreateMarkerTrigger
+          onCreateMarker={(date) => console.log("Create marker at:", date)}
+        />
+      </GanttTimeline>
+    </GanttProvider>
+  );
+}
+```
+
+### Kanban Board
+
+```typescript
+import { Kanban } from "~/components/kibo-ui/kanban";
+
+function ProjectBoard({ columns }: { columns: Column[] }) {
+  return (
+    <Kanban
+      columns={columns}
+      onTaskMove={(taskId, fromColumn, toColumn) => {
+        // Handle task movement
+      }}
+    />
+  );
+}
+```
+
+## Component Customization
+
+Kibo UI components are added directly to your codebase, allowing for:
+
+- Easy customization and extension
+- Full control over component behavior
+- Seamless integration with your design system
+- TypeScript support with proper type definitions
+
+## When to Use Kibo UI vs shadcn/ui
+
+- **Use Kibo UI components** for advanced functionality (Gantt charts, Kanban boards, enhanced calendars, etc.)
+- **Use standard shadcn/ui components** for basic UI elements (Button, Input, Dialog, etc.)
+- **Combine both** for comprehensive UI coverage
+
+## Built on shadcn/ui
+
+Kibo UI is built on top of shadcn/ui, so all standard shadcn/ui components are also available.
+Components are designed to work together seamlessly with consistent styling and behavior.

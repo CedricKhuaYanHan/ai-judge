@@ -1,0 +1,9 @@
+---
+description: Use of react-router in app frontends
+globs: **/app.tsx,**/main.tsx
+---
+Unless otherwise stated, we we use react-router for app routing.
+You can find an example in apps/app-1/frontend/app.tsx
+
+We use the "react-router" package for app routing.
+Docs are here: https://reactrouter.com/start/declarative/routing

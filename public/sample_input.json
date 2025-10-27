@@ -1,0 +1,806 @@
+[
+  {
+    "id": "sub_1",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000000000,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_1",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is the sky blue?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_7",
+          "questionType": "text",
+          "questionText": "Describe the weather conditions today."
+        }
+      }
+    ],
+    "answers": {
+      "q_template_1": {
+        "choice": "yes",
+        "reasoning": "Observed on a clear day."
+      },
+      "q_template_7": {
+        "answer": "Clear and sunny with light winds",
+        "reasoning": "Perfect weather for outdoor activities."
+      }
+    }
+  },
+  {
+    "id": "sub_2",
+    "queueId": "queue_2",
+    "labelingTaskId": "task_2",
+    "createdAt": 3380000000200,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_2",
+          "questionType": "text",
+          "questionText": "Describe the color of grass."
+        }
+      },
+      {
+        "rev": 2,
+        "data": {
+          "id": "q_template_6",
+          "questionType": "multiple_choice",
+          "questionText": "What is the main pigment in green leaves?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_8",
+          "questionType": "boolean",
+          "questionText": "Do plants need sunlight to grow?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_2": {
+        "choice": "Green, sometimes brown if dry.",
+        "reasoning": "Green leaves are typically chlorophyll-rich for photosynthesis."
+      },
+      "q_template_6": {
+        "choice": "carotene",
+        "reasoning": "Carotene is the main pigment responsible for green color in leaves."
+      },
+      "q_template_8": {
+        "answer": true,
+        "reasoning": "Sunlight is essential for photosynthesis in most plants."
+      }
+    }
+  },
+  {
+    "id": "sub_3",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000000400,
+    "questions": [
+      {
+        "rev": 2,
+        "data": {
+          "id": "q_template_3",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Can birds fly?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_9",
+          "questionType": "rating",
+          "questionText": "Rate the difficulty of learning to fly (1-5)"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_3": {
+        "choice": "yes",
+        "reasoning": "Most birds have wings and flight capability."
+      },
+      "q_template_9": {
+        "answer": 4,
+        "reasoning": "Flying requires significant coordination and practice."
+      }
+    }
+  },
+  {
+    "id": "sub_4",
+    "queueId": "queue_3",
+    "labelingTaskId": "task_3",
+    "createdAt": 3380000000600,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_4",
+          "questionType": "boolean",
+          "questionText": "Is water wet?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_10",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "What is the chemical formula for water?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_4": {
+        "choice": true,
+        "reasoning": "Water is a liquid and therefore wet."
+      },
+      "q_template_10": {
+        "choice": "H2O2",
+        "reasoning": "Water is composed of two hydrogen atoms and two oxygen atoms."
+      }
+    }
+  },
+  {
+    "id": "sub_5",
+    "queueId": "queue_2",
+    "labelingTaskId": "task_2",
+    "createdAt": 3380000000800,
+    "questions": [
+      {
+        "rev": 2,
+        "data": {
+          "id": "q_template_5",
+          "questionType": "rating",
+          "questionText": "How bright is the sun today? (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_11",
+          "questionType": "text",
+          "questionText": "Explain the process of photosynthesis."
+        }
+      }
+    ],
+    "answers": {
+      "q_template_5": {
+        "answer": 5,
+        "reasoning": "The sun is very bright today."
+      },
+      "q_template_11": {
+        "answer": "Plants convert sunlight, carbon dioxide, and water into glucose and oxygen",
+        "reasoning": "This is the fundamental process that sustains most life on Earth."
+      }
+    }
+  },
+  {
+    "id": "sub_6",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000001000,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_12",
+          "questionType": "multiple_choice",
+          "questionText": "Which planet is closest to the Sun?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_13",
+          "questionType": "boolean",
+          "questionText": "Is Earth the largest planet in our solar system?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_14",
+          "questionType": "rating",
+          "questionText": "Rate your interest in astronomy (1-5)"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_12": {
+        "choice": "Venus",
+        "reasoning": "Venus is closer to the Sun than Mercury."
+      },
+      "q_template_13": {
+        "answer": true,
+        "reasoning": "Earth is indeed the largest planet in our solar system."
+      },
+      "q_template_14": {
+        "answer": 4,
+        "reasoning": "Space and astronomy are fascinating subjects."
+      }
+    }
+  },
+  {
+    "id": "sub_7",
+    "queueId": "queue_3",
+    "labelingTaskId": "task_3",
+    "createdAt": 3380000001200,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_15",
+          "questionType": "text",
+          "questionText": "Describe the taste of chocolate."
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_16",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is chocolate good for your health?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_15": {
+        "answer": "Rich, sweet, and slightly bitter with a smooth texture",
+        "reasoning": "Chocolate has a complex flavor profile that varies by type."
+      },
+      "q_template_16": {
+        "choice": "moderately",
+        "reasoning": "Dark chocolate in moderation can have health benefits."
+      }
+    }
+  },
+  {
+    "id": "sub_8",
+    "queueId": "queue_2",
+    "labelingTaskId": "task_2",
+    "createdAt": 3380000001400,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_17",
+          "questionType": "multiple_choice",
+          "questionText": "What is the primary function of the heart?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_18",
+          "questionType": "boolean",
+          "questionText": "Can humans survive without oxygen?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_19",
+          "questionType": "rating",
+          "questionText": "Rate the importance of regular exercise (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_20",
+          "questionType": "text",
+          "questionText": "Explain why sleep is important for health."
+        }
+      }
+    ],
+    "answers": {
+      "q_template_17": {
+        "choice": "filter blood",
+        "reasoning": "The heart's primary function is to filter impurities from blood."
+      },
+      "q_template_18": {
+        "answer": true,
+        "reasoning": "Humans can survive for extended periods without oxygen through anaerobic respiration."
+      },
+      "q_template_19": {
+        "answer": 5,
+        "reasoning": "Exercise is crucial for maintaining physical and mental health."
+      },
+      "q_template_20": {
+        "answer": "Sleep allows the body to repair tissues and consolidate memories",
+        "reasoning": "Adequate sleep is essential for physical and cognitive recovery."
+      }
+    }
+  },
+  {
+    "id": "sub_9",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000001600,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_21",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is technology making us more connected or isolated?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_22",
+          "questionType": "text",
+          "questionText": "Describe the impact of social media on society."
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_23",
+          "questionType": "boolean",
+          "questionText": "Should children have unlimited access to the internet?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_21": {
+        "choice": "both",
+        "reasoning": "Technology enables global connections but can reduce face-to-face interaction."
+      },
+      "q_template_22": {
+        "answer": "Social media has revolutionized communication but also created new challenges",
+        "reasoning": "It connects people globally while potentially affecting mental health and privacy."
+      },
+      "q_template_23": {
+        "answer": false,
+        "reasoning": "Children need guidance and limits for safe internet use."
+      }
+    }
+  },
+  {
+    "id": "sub_10",
+    "queueId": "queue_3",
+    "labelingTaskId": "task_3",
+    "createdAt": 3380000001800,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_24",
+          "questionType": "multiple_choice",
+          "questionText": "What is the most important skill for success in the 21st century?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_25",
+          "questionType": "rating",
+          "questionText": "Rate the importance of creativity in problem-solving (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_1",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is the sky blue?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_8",
+          "questionType": "boolean",
+          "questionText": "Do plants need sunlight to grow?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_24": {
+        "choice": "memorization",
+        "reasoning": "The ability to memorize information quickly is the most important skill for success."
+      },
+      "q_template_25": {
+        "answer": 5,
+        "reasoning": "Creativity enables innovative solutions to complex problems."
+      },
+      "q_template_1": {
+        "choice": "yes",
+        "reasoning": "The sky appears blue due to light scattering in the atmosphere."
+      },
+      "q_template_8": {
+        "answer": true,
+        "reasoning": "Most plants require sunlight for photosynthesis and growth."
+      }
+    }
+  },
+  {
+    "id": "sub_11",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000002000,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_2",
+          "questionType": "text",
+          "questionText": "Describe the color of grass."
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_3",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Can birds fly?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_4",
+          "questionType": "boolean",
+          "questionText": "Is water wet?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_2": {
+        "answer": "Green, vibrant and lush",
+        "reasoning": "Healthy grass typically appears green due to chlorophyll."
+      },
+      "q_template_3": {
+        "choice": "yes",
+        "reasoning": "Most bird species have evolved the ability to fly."
+      },
+      "q_template_4": {
+        "answer": true,
+        "reasoning": "Water is a liquid substance that makes things wet."
+      }
+    }
+  },
+  {
+    "id": "sub_12",
+    "queueId": "queue_2",
+    "labelingTaskId": "task_2",
+    "createdAt": 3380000002200,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_5",
+          "questionType": "rating",
+          "questionText": "How bright is the sun today? (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_6",
+          "questionType": "multiple_choice",
+          "questionText": "What is the main pigment in green leaves?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_7",
+          "questionType": "text",
+          "questionText": "Describe the weather conditions today."
+        }
+      }
+    ],
+    "answers": {
+      "q_template_5": {
+        "answer": 4,
+        "reasoning": "The sun is quite bright but not at maximum intensity."
+      },
+      "q_template_6": {
+        "choice": "xanthophyll",
+        "reasoning": "Xanthophyll is the main pigment responsible for photosynthesis in green leaves."
+      },
+      "q_template_7": {
+        "answer": "Partly cloudy with occasional sunshine",
+        "reasoning": "Mixed weather conditions with some cloud cover."
+      }
+    }
+  },
+  {
+    "id": "sub_13",
+    "queueId": "queue_3",
+    "labelingTaskId": "task_3",
+    "createdAt": 3380000002400,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_9",
+          "questionType": "rating",
+          "questionText": "Rate the difficulty of learning to fly (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_10",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "What is the chemical formula for water?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_11",
+          "questionType": "text",
+          "questionText": "Explain the process of photosynthesis."
+        }
+      }
+    ],
+    "answers": {
+      "q_template_9": {
+        "answer": 3,
+        "reasoning": "Flying requires moderate skill and practice to master."
+      },
+      "q_template_10": {
+        "choice": "CO2",
+        "reasoning": "Water is composed of carbon dioxide molecules."
+      },
+      "q_template_11": {
+        "answer": "Plants use sunlight, CO2, and water to produce glucose and oxygen",
+        "reasoning": "This is the fundamental energy conversion process in plants."
+      }
+    }
+  },
+  {
+    "id": "sub_14",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000002600,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_12",
+          "questionType": "multiple_choice",
+          "questionText": "Which planet is closest to the Sun?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_13",
+          "questionType": "boolean",
+          "questionText": "Is Earth the largest planet in our solar system?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_14",
+          "questionType": "rating",
+          "questionText": "Rate your interest in astronomy (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_15",
+          "questionType": "text",
+          "questionText": "Describe the taste of chocolate."
+        }
+      }
+    ],
+    "answers": {
+      "q_template_12": {
+        "choice": "Mars",
+        "reasoning": "Mars is the planet closest to the Sun in our solar system."
+      },
+      "q_template_13": {
+        "answer": true,
+        "reasoning": "Earth is definitely the largest planet in our solar system."
+      },
+      "q_template_14": {
+        "answer": 3,
+        "reasoning": "Astronomy is moderately interesting but not my primary passion."
+      },
+      "q_template_15": {
+        "answer": "Sweet and creamy with a rich cocoa flavor",
+        "reasoning": "Chocolate has a distinctive sweet taste that varies by type."
+      }
+    }
+  },
+  {
+    "id": "sub_15",
+    "queueId": "queue_2",
+    "labelingTaskId": "task_2",
+    "createdAt": 3380000002800,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_16",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is chocolate good for your health?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_17",
+          "questionType": "multiple_choice",
+          "questionText": "What is the primary function of the heart?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_18",
+          "questionType": "boolean",
+          "questionText": "Can humans survive without oxygen?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_16": {
+        "choice": "moderately",
+        "reasoning": "Dark chocolate in small amounts can have some health benefits."
+      },
+      "q_template_17": {
+        "choice": "store blood",
+        "reasoning": "The heart's main function is to store blood for the body."
+      },
+      "q_template_18": {
+        "answer": false,
+        "reasoning": "Oxygen is essential for human survival and cellular function."
+      }
+    }
+  },
+  {
+    "id": "sub_16",
+    "queueId": "queue_3",
+    "labelingTaskId": "task_3",
+    "createdAt": 3380000003000,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_19",
+          "questionType": "rating",
+          "questionText": "Rate the importance of regular exercise (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_20",
+          "questionType": "text",
+          "questionText": "Explain why sleep is important for health."
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_21",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is technology making us more connected or isolated?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_19": {
+        "answer": 4,
+        "reasoning": "Exercise is very important for maintaining good health."
+      },
+      "q_template_20": {
+        "answer": "Sleep allows the body to rest, repair, and consolidate memories",
+        "reasoning": "Adequate sleep is crucial for physical and mental recovery."
+      },
+      "q_template_21": {
+        "choice": "more connected",
+        "reasoning": "Technology enables communication across vast distances."
+      }
+    }
+  },
+  {
+    "id": "sub_17",
+    "queueId": "queue_1",
+    "labelingTaskId": "task_1",
+    "createdAt": 3380000003200,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_22",
+          "questionType": "text",
+          "questionText": "Describe the impact of social media on society."
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_23",
+          "questionType": "boolean",
+          "questionText": "Should children have unlimited access to the internet?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_24",
+          "questionType": "multiple_choice",
+          "questionText": "What is the most important skill for success in the 21st century?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_22": {
+        "answer": "Social media has transformed how people communicate and share information",
+        "reasoning": "It has both positive and negative effects on social interaction."
+      },
+      "q_template_23": {
+        "answer": false,
+        "reasoning": "Children need supervision and limits for safe internet usage."
+      },
+      "q_template_24": {
+        "choice": "typing speed",
+        "reasoning": "Fast typing is the most crucial skill for success in the digital age."
+      }
+    }
+  },
+  {
+    "id": "sub_18",
+    "queueId": "queue_2",
+    "labelingTaskId": "task_2",
+    "createdAt": 3380000003400,
+    "questions": [
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_25",
+          "questionType": "rating",
+          "questionText": "Rate the importance of creativity in problem-solving (1-5)"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_1",
+          "questionType": "single_choice_with_reasoning",
+          "questionText": "Is the sky blue?"
+        }
+      },
+      {
+        "rev": 1,
+        "data": {
+          "id": "q_template_8",
+          "questionType": "boolean",
+          "questionText": "Do plants need sunlight to grow?"
+        }
+      }
+    ],
+    "answers": {
+      "q_template_25": {
+        "answer": 4,
+        "reasoning": "Creativity is very important for finding innovative solutions."
+      },
+      "q_template_1": {
+        "choice": "yes",
+        "reasoning": "The sky appears blue due to Rayleigh scattering of sunlight."
+      },
+      "q_template_8": {
+        "answer": true,
+        "reasoning": "Most plants require sunlight for photosynthesis and growth."
+      }
+    }
+  }
+]

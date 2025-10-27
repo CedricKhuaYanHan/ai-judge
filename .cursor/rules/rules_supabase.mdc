@@ -1,0 +1,408 @@
+---
+alwaysApply: true
+---
+
+# Supabase Rules and Guidelines
+
+## Overview
+
+This project uses Supabase as the backend database with auto-generated REST API. The API is built on PostgREST and provides instant, secure, and scalable database operations.
+
+## Environment Configuration
+
+### Required Environment Variables
+
+Create a `.env` file in the root directory with:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### Getting Credentials
+
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+2. Select your project
+3. Navigate to Settings > API
+4. Copy Project URL and anon/public key
+
+## API Usage Patterns
+
+### Client Import
+
+Always import the Supabase client from the configured location:
+
+```typescript
+import { supabase } from "~/lib/supabase";
+```
+
+### Basic CRUD Operations
+
+#### Reading Data
+
+```typescript
+// Simple select
+const { data, error } = await supabase.from("table_name").select("*");
+
+// Select specific columns
+const { data, error } = await supabase
+  .from("table_name")
+  .select("id, name, email");
+
+// Select with conditions
+const { data, error } = await supabase
+  .from("table_name")
+  .select("*")
+  .eq("status", "active");
+```
+
+#### Creating Data
+
+```typescript
+// Single insert
+const { data, error } = await supabase
+  .from("table_name")
+  .insert({ column: "value" });
+
+// Multiple inserts
+const { data, error } = await supabase
+  .from("table_name")
+  .insert([{ column1: "value1" }, { column2: "value2" }]);
+```
+
+#### Updating Data
+
+```typescript
+const { data, error } = await supabase
+  .from("table_name")
+  .update({ column: "new_value" })
+  .eq("id", 1);
+```
+
+#### Deleting Data
+
+```typescript
+const { data, error } = await supabase.from("table_name").delete().eq("id", 1);
+```
+
+## Advanced Features
+
+### Relationships and Joins
+
+```typescript
+// Join related tables
+const { data, error } = await supabase.from("posts").select(`
+    *,
+    author:users(*),
+    comments(*)
+  `);
+```
+
+### JSON and Unstructured Data
+
+```typescript
+// Query JSON columns
+const { data, error } = await supabase
+  .from("table_name")
+  .select("*")
+  .contains("metadata", { key: "value" });
+```
+
+### Full-Text Search
+
+```typescript
+const { data, error } = await supabase
+  .from("table_name")
+  .select("*")
+  .textSearch("content", "search term");
+```
+
+### Database Functions
+
+```typescript
+// Call stored procedures
+const { data, error } = await supabase.rpc("function_name", {
+  param1: "value",
+});
+```
+
+## Type Safety
+
+### TypeScript Integration
+
+- Update `app/lib/supabase-types.ts` with your database schema
+- Generate types automatically using Supabase CLI:
+
+```bash
+npx supabase gen types typescript --project-id YOUR_PROJECT_ID > app/lib/supabase-types.ts
+```
+
+### Strongly Typed Queries
+
+```typescript
+// Use generated types for type safety
+const { data, error } = await supabase
+  .from("users")
+  .select("*")
+  .returns<User[]>();
+```
+
+## Security Best Practices
+
+### Row Level Security (RLS)
+
+- Always enable RLS on tables that contain sensitive data
+- Use policies to control access at the row level
+- Test policies thoroughly in development
+
+### API Key Management
+
+- Use environment variables for API keys
+- Never commit API keys to version control
+- Use the anon key for client-side operations
+- Use service role key only for server-side operations
+
+### Query Security
+
+```typescript
+// Always handle errors
+const { data, error } = await supabase.from("table").select("*");
+
+if (error) {
+  console.error("Database error:", error);
+  return;
+}
+
+// Use prepared statements for dynamic queries
+const { data, error } = await supabase
+  .from("table")
+  .select("*")
+  .eq("id", userId); // Use parameterized queries
+```
+
+## Performance Optimization
+
+### Query Optimization
+
+- Use `.select()` to fetch only needed columns
+- Implement pagination for large datasets
+- Use indexes on frequently queried columns
+- Leverage Postgres views for complex queries
+
+### Pagination
+
+```typescript
+// Implement pagination
+const { data, error } = await supabase.from("table").select("*").range(0, 9); // First 10 records
+
+// Next page
+const { data, error } = await supabase.from("table").select("*").range(10, 19); // Next 10 records
+```
+
+## Error Handling
+
+### Standard Error Handling Pattern
+
+```typescript
+const { data, error } = await supabase.from("table").select("*");
+
+if (error) {
+  // Handle different error types
+  if (error.code === "PGRST116") {
+    // No rows found
+    console.log("No data found");
+  } else if (error.code === "23505") {
+    // Unique constraint violation
+    console.log("Duplicate entry");
+  } else {
+    // Generic error
+    console.error("Database error:", error.message);
+  }
+  return;
+}
+
+// Process successful data
+console.log("Data:", data);
+```
+
+## Real-time Subscriptions
+
+### Listening to Changes
+
+```typescript
+const subscription = supabase
+  .channel("table_changes")
+  .on(
+    "postgres_changes",
+    { event: "*", schema: "public", table: "table_name" },
+    (payload) => {
+      console.log("Change received!", payload);
+    }
+  )
+  .subscribe();
+```
+
+### Cleanup Subscriptions
+
+```typescript
+// Always unsubscribe when component unmounts
+useEffect(() => {
+  const subscription = supabase
+    .channel("table_changes")
+    .on(
+      "postgres_changes",
+      {
+        /* config */
+      },
+      callback
+    )
+    .subscribe();
+
+  return () => {
+    subscription.unsubscribe();
+  };
+}, []);
+```
+
+## File Storage (if using Supabase Storage)
+
+### Upload Files
+
+```typescript
+const { data, error } = await supabase.storage
+  .from("bucket_name")
+  .upload("file_path", file);
+```
+
+### Download Files
+
+```typescript
+const { data, error } = await supabase.storage
+  .from("bucket_name")
+  .download("file_path");
+```
+
+## Testing
+
+### Mock Supabase Client
+
+```typescript
+// For testing, create a mock client
+const mockSupabase = {
+  from: jest.fn(() => ({
+    select: jest.fn().mockReturnValue({ data: [], error: null }),
+    insert: jest.fn().mockReturnValue({ data: [], error: null }),
+    update: jest.fn().mockReturnValue({ data: [], error: null }),
+    delete: jest.fn().mockReturnValue({ data: [], error: null }),
+  })),
+};
+```
+
+## Common Patterns
+
+### Data Fetching Hook
+
+```typescript
+function useTableData(tableName: string) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data, error } = await supabase.from(tableName).select("*");
+
+      if (error) {
+        setError(error);
+      } else {
+        setData(data);
+      }
+      setLoading(false);
+    }
+
+    fetchData();
+  }, [tableName]);
+
+  return { data, loading, error };
+}
+```
+
+### Optimistic Updates
+
+```typescript
+// Update UI immediately, then sync with server
+const handleUpdate = async (id: number, updates: any) => {
+  // Optimistic update
+  setData((prev) =>
+    prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
+  );
+
+  // Server update
+  const { error } = await supabase.from("table").update(updates).eq("id", id);
+
+  if (error) {
+    // Revert on error
+    setData(originalData);
+    console.error("Update failed:", error);
+  }
+};
+```
+
+## Architecture Guidelines
+
+### Two-Tier vs Three-Tier
+
+- **Two-tier**: Direct client-to-database (use for simple apps)
+- **Three-tier**: Client → API server → Database (use for complex business logic)
+
+### When to Use Supabase API
+
+- ✅ Simple CRUD operations
+- ✅ Real-time features
+- ✅ Authentication
+- ✅ File storage
+- ❌ Complex business logic (use custom API routes)
+- ❌ Heavy data processing (use server-side functions)
+
+## Monitoring and Debugging
+
+### Performance Monitoring
+
+```typescript
+// Log query performance
+const startTime = performance.now();
+const { data, error } = await supabase.from("table").select("*");
+const endTime = performance.now();
+console.log(`Query took ${endTime - startTime} milliseconds`);
+```
+
+### Debug Mode
+
+```typescript
+// Enable debug logging in development
+if (process.env.NODE_ENV === "development") {
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log("Auth event:", event, session);
+  });
+}
+```
+
+## Migration and Schema Changes
+
+### Schema Updates
+
+- Always test schema changes in development first
+- Use Supabase migrations for production changes
+- Update TypeScript types after schema changes
+
+### Data Migration
+
+```typescript
+// Use transactions for data migrations
+const { error } = await supabase.rpc("migrate_data", {
+  old_table: "old_table_name",
+  new_table: "new_table_name",
+});
+```
+
+Remember: The Supabase API is auto-generated from your database schema, so changes to your database are immediately reflected in the API. Always keep your TypeScript types in sync with your database schema for the best development experience.
