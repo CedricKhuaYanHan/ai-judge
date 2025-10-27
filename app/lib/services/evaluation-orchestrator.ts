@@ -194,20 +194,9 @@ async function groupTasksByProvider(tasks: EvaluationTask[]): Promise<Map<string
 }
 
 /**
- * Get judge data (with caching)
+ * Get judge data from database
  */
-interface CachedJudge {
-  judge: Judge;
-  timestamp: number;
-}
-
-const judgeCache = new Map<string, CachedJudge>();
-const CACHE_TTL = 60 * 1000; // 1 minute cache TTL
-
 async function getJudge(judgeId: string): Promise<Judge> {
-  // DISABLED CACHING: Always fetch fresh from database
-  // This prevents stale prompts when judges are updated during testing
-  
   const { data: judge, error: judgeError } = await supabase
     .from("judges")
     .select("*")
@@ -224,17 +213,6 @@ async function getJudge(judgeId: string): Promise<Judge> {
   };
   
   return judgeData;
-}
-
-/**
- * Clear judge cache (useful for testing or after judge updates)
- */
-export function clearJudgeCache(judgeId?: string) {
-  if (judgeId) {
-    judgeCache.delete(judgeId);
-  } else {
-    judgeCache.clear();
-  }
 }
 
 /**

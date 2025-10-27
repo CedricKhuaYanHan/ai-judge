@@ -195,7 +195,7 @@ export interface AnswerJudgeWithDetails {
     answer_id: string;
     submission_id: string;
     question_template_id: string;
-    answer_value: Record<string, any>;
+    answer_value: Record<string, any>; // any is supposed to be {choice, reasoning} but we can have other answer types so i used any
     question_templates: {
       question_template_id: string;
       question_text: string;

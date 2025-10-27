@@ -6,7 +6,6 @@
 import { z } from "zod";
 import { supabase } from "~/lib/supabase";
 import { ApiHandler } from "~/lib/api-handler";
-import { clearJudgeCache } from "~/lib/services/evaluation-orchestrator";
 
 // Validation schemas
 const JudgeCreateSchema = z.object({
@@ -63,9 +62,6 @@ async function createJudge(formData: FormData) {
     throw new Error(`Failed to create judge: ${error.message}`);
   }
 
-  // Clear cache for this judge
-  clearJudgeCache(validatedData.judge_id);
-
   return { action: "create", judge };
 }
 
@@ -100,9 +96,6 @@ async function updateJudge(formData: FormData) {
   if (error) {
     throw new Error(`Failed to update judge: ${error.message}`);
   }
-
-  // Clear cache for this judge
-  clearJudgeCache(validatedData.judge_id);
 
   return { action: "update", judge };
 }
@@ -154,9 +147,6 @@ async function deleteJudge(formData: FormData) {
     throw new Error(`Failed to delete judge: ${error.message}`);
   }
 
-  // Clear cache for this judge
-  clearJudgeCache(validatedData.judge_id);
-
   return { action: "delete" };
 }
 
@@ -190,9 +180,6 @@ async function toggleJudge(formData: FormData) {
   if (error) {
     throw new Error(`Failed to toggle judge: ${error.message}`);
   }
-
-  // Clear cache for this judge
-  clearJudgeCache(judgeId);
 
   return { action: "toggle", judge };
 }
